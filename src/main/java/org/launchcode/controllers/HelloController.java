@@ -1,14 +1,12 @@
 package org.launchcode.controllers;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.launchcode.models.HelloMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by Maggie on 3/30/2017.
+ * Created by Sarah on 3/30/2017.
  */
 @Controller
 public class HelloController {
@@ -30,6 +28,13 @@ public class HelloController {
     public String hellowForm(){
         String html = "<form method='post'>" +
                 "<input type='text' name='name' />" +
+                "<select name='lang'>" +
+                    "<option value='En' selected>English</option>" +
+                    "<option value='Sp'>Spanish</option>" +
+                    "<option value='Ma'>Mandarin</option>" +
+                    "<option value='Ar'>Arabic</option>" +
+                    "<option value='Sw'>Swahili</option>" +
+                "</select>" +
                 "<input type='submit' value='Greet Me!' />" +
                 "</form>";
 
@@ -38,11 +43,9 @@ public class HelloController {
 
     @RequestMapping(value = "hello", method= RequestMethod.POST)
     @ResponseBody
-    public String helloPost(HttpServletRequest request){
+    public String helloPost(@RequestParam String name, @RequestParam String lang){
 
-        String name = request.getParameter("name");
-
-        return "Hello " + name;
+        return HelloMessage.createMessage(name, lang);
     }
 
     @RequestMapping(value = "hello/{name}")
